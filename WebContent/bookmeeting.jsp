@@ -155,7 +155,7 @@
 								<strong>提示信息:</strong>${requestScope.msg}
 							</div>
 							</c:if>
-							<form class="form-horizontal" role="form" action="AddMeetingRoomServlet" method="post">
+							<form class="form-horizontal" role="form" action="TestServlet" method="post">
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="meetingname">会议名称</label>
 									<div class="col-lg-5">
@@ -222,7 +222,7 @@
                                         <input type="button" class="clickbutton" value="&lt;" onclick="deSelectEmployees()"/>
 									</div>
 									<div class="col-lg-2">
-										<select id="selSelectedEmployees" class="form-control" style="height:32%;" multiple="true">
+										<select id="selSelectedEmployees" name="selSelectedEmployees" class="form-control" style="height:32%;" multiple="true">
                                         </select>
 									</div>									
 								</div>
