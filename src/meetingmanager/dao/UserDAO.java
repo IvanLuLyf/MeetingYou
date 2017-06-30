@@ -252,6 +252,69 @@ public class UserDAO {
 		return users;
 	}
 	
+	public Map<Integer, User> selectAllMap(){
+		conn = DataBaseConnection.getConnection();
+		Map<Integer,User> users = new HashMap<Integer,User>();
+		User user = null;
+		try {
+			PreparedStatement psd = null;
+			String sql = "select * from mm_user";
+			psd = conn.prepareStatement(sql);
+			ResultSet rs = psd.executeQuery(sql);
+			while (rs.next()) {
+				user = new User();
+				user.setUid(rs.getInt("uid"));
+				user.setName(rs.getString("name"));
+				user.setUsername(rs.getString("username"));
+				user.setPhone(rs.getString("phone"));
+				user.setEmail(rs.getString("email"));
+				user.setVerified(rs.getInt("verified"));
+				user.setDepartmentid(rs.getInt("departmentid"));
+				user.setPassword(rs.getString("password"));
+				user.setRole(rs.getInt("roleid"));
+				users.put(user.getUid(), user);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+		return users;
+	}
+	
+	public List<User> selectUserByDeptid(Integer deptid){
+		conn = DataBaseConnection.getConnection();
+		List<User> users = new ArrayList<User>();
+		User user = null;
+		try {
+			PreparedStatement psd = null;
+			String sql = "select * from mm_user where departmentid = " + deptid;
+			psd = conn.prepareStatement(sql);
+			ResultSet rs = psd.executeQuery(sql);
+			while (rs.next()) {
+				user = new User();
+				user.setUid(rs.getInt("uid"));
+				user.setName(rs.getString("name"));
+				user.setUsername(rs.getString("username"));
+				user.setPhone(rs.getString("phone"));
+				user.setEmail(rs.getString("email"));
+				user.setVerified(rs.getInt("verified"));
+				user.setDepartmentid(rs.getInt("departmentid"));
+				user.setPassword(rs.getString("password"));
+				user.setRole(rs.getInt("roleid"));
+				users.add(user);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+
+		return users;
+	}
+	
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
 		List<User> users = dao.selectUsersByNameStatus("", "", 1);

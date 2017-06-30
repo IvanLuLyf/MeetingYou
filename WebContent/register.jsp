@@ -6,6 +6,25 @@
 <title>Meeting You</title>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="styles/login.css" />
+<style>
+	body, html {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		margin: 0;
+		padding: 0;
+	}
+	#background {
+		position: fixed;
+		top: 0;
+		left: 0;
+
+		z-index: -100;
+	}
+</style>
 <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
 <script type="text/javascript">
 	//使用ajax方法访问，验证账户名是否存在
@@ -46,6 +65,8 @@
 
 </head>
 <body>
+	<canvas id="background"></canvas>
+	<script async type="text/javascript" src="js/background.js"></script>
 	<div class="container">
 		<form name="formReg" action="RegisterServlet" method="post" class="form-signin">
 			<!-- <h2 class="form-signin-heading">员工注册</h2> -->
@@ -104,6 +125,7 @@
 			<br>
 			
 			<button class="btn btn-lg btn-success btn-block" type="submit">注册</button>
+			<input type="button" value="登录" class="btn btn-lg btn-info btn-block" onclick="window.location.href='login.jsp'" />
 			<input type="reset" class="btn btn-lg btn-default btn-block" value="重置" />
 		</form>
 	</div>

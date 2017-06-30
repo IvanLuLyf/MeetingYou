@@ -15,7 +15,8 @@ public class Meeting {
 	private Timestamp canceltime;
 	private String description;
 	private String member;
-
+	private String reason;
+	
 	public Meeting() {
 		super();
 	}
@@ -23,7 +24,7 @@ public class Meeting {
 	public Meeting(Integer roomid, Integer reserverid, String name,
 			Integer capacity, Integer status, Timestamp reservetime,
 			Timestamp begintime, Timestamp endtime, Timestamp canceltime,
-			String description, String member) {
+			String description, String member, String reason) {
 		super();
 		this.roomid = roomid;
 		this.reserverid = reserverid;
@@ -36,12 +37,13 @@ public class Meeting {
 		this.canceltime = canceltime;
 		this.description = description;
 		this.member = member;
+		this.reason = reason;
 	}
 
 	public Meeting(Integer meetingid, Integer roomid, Integer reserverid,
 			String name, Integer capacity, Integer status,
 			Timestamp reservetime, Timestamp begintime, Timestamp endtime,
-			Timestamp canceltime, String description, String member) {
+			Timestamp canceltime, String description, String member, String reason) {
 		super();
 		this.meetingid = meetingid;
 		this.roomid = roomid;
@@ -55,6 +57,7 @@ public class Meeting {
 		this.canceltime = canceltime;
 		this.description = description;
 		this.member = member;
+		this.reason = reason;
 	}
 
 	public Integer getMeetingid() {
@@ -153,10 +156,18 @@ public class Meeting {
 		this.member = member;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	
 	public static void main(String args[]) {
 		Timestamp timestamp = new Timestamp(1498705015);
 		Meeting meeting = new Meeting(2, 101, 1, "Test", 20, 0, timestamp,
-				timestamp, timestamp, timestamp, "", "[1,2,3]");
+				timestamp, timestamp, timestamp, "", "[1,2,3]","Some Reason");
 		System.out.println(meeting);
 	}
 
@@ -167,6 +178,6 @@ public class Meeting {
 				+ ",\"reservetime\":\"" + reservetime + "\",\"begintime\":\""
 				+ begintime + "\",\"endtime\":\"" + endtime
 				+ "\",\"canceltime\":\"" + canceltime + "\",\"member\":"
-				+ member + "}";
+				+ member + ",\"reason\":\"" + reason + "\"}";
 	}
 }

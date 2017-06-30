@@ -14,11 +14,11 @@ if(session.getAttribute("roleid")!=null){
 						</div>
 						<div class="panel-body">
 							<ul class="nav nav-list">
-								<li><a href="notifications.jsp">最新通知</a>
+								<li><a href="NotificationServlet">最新通知</a>
 								</li>
-								<li><a href="mybookings.jsp">我的预定</a>
+								<li><a href="MyBookingServlet">我的预定</a>
 								</li>
-								<li><a href="mymeetings.jsp">我的会议</a>
+								<li><a href="MyMeetingServlet">我的会议</a>
 								</li>
 							</ul>
 						</div>
@@ -60,7 +60,7 @@ if(session.getAttribute("roleid")!=null){
 								<%} %>
 								<li><a href="ViewAllRoomsServlet?code=viewall">查看会议室</a>
 								</li>
-								<li><a href="bookmeeting.jsp">预定会议</a>
+								<li><a href="BookMeetingServlet?code=prepare">预定会议</a>
 								</li>
 							</ul>
 						</div>

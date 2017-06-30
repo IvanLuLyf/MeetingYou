@@ -37,6 +37,64 @@ public class MeetingRoomDAO {
 		}
 		return meetingRooms;
 	}
+	
+	public List<MeetingRoom> selectBetween(String beginTime,String endTime) {
+		conn = DataBaseConnection.getConnection();
+
+		List<MeetingRoom> meetingRooms = new ArrayList<MeetingRoom>();
+
+		try {
+			Statement st = null;
+			String sql = "SELECT * FROM mm_room WHERE roomid NOT IN (SELECT roomid FROM mm_meeting WHERE (begintime BETWEEN '" + beginTime + "' AND '" + endTime + "') OR (endtime BETWEEN '" + beginTime + "' AND '" + endTime + "') )";
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			MeetingRoom meetingRoom;
+			while (rs.next()) {
+				meetingRoom = new MeetingRoom();
+				meetingRoom.setRoomid(rs.getInt("roomid"));
+				meetingRoom.setName(rs.getString("name"));
+				meetingRoom.setNumber(rs.getInt("number"));
+				meetingRoom.setCapacity(rs.getInt("capacity"));
+				meetingRoom.setDescription(rs.getString("description"));
+				meetingRoom.setStaus(rs.getInt("status"));
+				meetingRooms.add(meetingRoom);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+		return meetingRooms;
+	}
+	
+	public Map<Integer, MeetingRoom> selectAllMap(){
+		conn = DataBaseConnection.getConnection();
+
+		Map<Integer,MeetingRoom> meetingRooms = new HashMap<Integer,MeetingRoom>();
+
+		try {
+			Statement st = null;
+			String sql = "select * from mm_room";
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			MeetingRoom meetingRoom;
+			while (rs.next()) {
+				meetingRoom = new MeetingRoom();
+				meetingRoom.setRoomid(rs.getInt("roomid"));
+				meetingRoom.setName(rs.getString("name"));
+				meetingRoom.setNumber(rs.getInt("number"));
+				meetingRoom.setCapacity(rs.getInt("capacity"));
+				meetingRoom.setDescription(rs.getString("description"));
+				meetingRoom.setStaus(rs.getInt("status"));
+				meetingRooms.put(meetingRoom.getRoomid(),meetingRoom);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+		return meetingRooms;
+	}
 
 	public MeetingRoom selectByNumber(Integer number) {
 		MeetingRoom meetingRoom = null;

@@ -1,3 +1,4 @@
+<%@ page import="java.text.*"%>
 <%@ page language="java"
 	import="java.util.*,meetingmanager.vo.*"
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
@@ -11,117 +12,118 @@
 	<script src="js/jquery.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="application/javascript">
-            function employee(employeeid, employeename){
-                this.employeeid = employeeid;
-                this.employeename = employeename;
+	<script type="text/javascript">
+
+	    var xmlHttp;
+
+        function createXMLHttpRequest() {
+            if (window.ActiveXObject) {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } 
+            else if (window.XMLHttpRequest) {
+                xmlHttp = new XMLHttpRequest();                
             }
-            function department(departmentid, departmentname, employees){
-                this.departmentid = departmentid;
-                this.departmentname = departmentname;
-                this.employees = employees;
-            }
-            var data = new Array(
-                new department(1, "技术部", new Array(
-                    new employee(1001, "a00"), new employee(1002, "a01"), new employee(1003, "a02"), new employee(1004, "a03"))),
-                new department(2, "销售部", new Array(
-                    new employee(2001, "b00"), new employee(2002, "b01"), new employee(2003, "b02"), new employee(2004, "b03"))),
-                new department(3, "市场部", new Array(
-                    new employee(3001, "c00"), new employee(3002, "c01"), new employee(3003, "c02"), new employee(3004, "c03"))),
-                new department(4, "行政部", new Array(
-                    new employee(4001, "d00"), new employee(4002, "d01"), new employee(4003, "d02"), new employee(4004, "d03"))));
-            
-            var selDepartments;
-            var selEmployees;
-            var selSelectedEmployees;
-            
-            function body_load(){
-                selDepartments = document.getElementById("selDepartments");
-                selEmployees = document.getElementById("selEmployees");
-                selSelectedEmployees = document.getElementById("selSelectedEmployees");
-                
-                for(var i=0;i<data.length;i++){
-                    var dep = document.createElement("option");
-                    dep.value = data[i].departmentid;
-                    dep.text = data[i].departmentname;
-                    selDepartments.appendChild(dep);
-                }
-                
-                fillEmployees();
-            }
-            
-            function fillEmployees(){
-                clearList(selEmployees);
-                var departmentid = selDepartments.options[selDepartments.selectedIndex].value;
-                var employees;
-                for(var i=0;i<data.length;i++){
-                    if (departmentid == data[i].departmentid){
-                        employees = data[i].employees;
-                        break;
-                    }
-                }
-                for(i=0;i<employees.length;i++){
-                    var emp = document.createElement("option");
-                    emp.value = employees[i].employeeid;
-                    emp.text = employees[i].employeename;
-                    selEmployees.appendChild(emp);
+        }
+
+        function showUsers() {
+            createXMLHttpRequest();
+       		var deptid=document.getElementById("selDepartments").value;   	
+       		var url = "ViewUserByDeptidServlet?deptid=" + escape(deptid);           
+            xmlHttp.open("GET", url, true);     
+            xmlHttp.onreadystatechange = showUsersCallback;
+            xmlHttp.send(null);
+        }
+
+        function showUsersCallback() {
+           clearUsers();
+           var selUnselectedUsers=document.getElementById("selUnselectedUsers");
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                	console.log(xmlHttp.responseText);
+                	console.log(xmlHttp.responseXML);
+                    var elements = xmlHttp.responseXML.getElementsByTagName("option");
+                    console.log(elements);
+                    for (var i = 0; i < elements.length; i++) {
+	                    var value = elements[i].getElementsByTagName("value")[0].firstChild.nodeValue;
+	                    console.log(elements[i].getElementsByTagName("text")[0]);
+	                    var text = elements[i].getElementsByTagName("text")[0].firstChild.nodeValue;                
+	                    selUnselectedUsers.options.add(new Option(text,value));
+                    }       
                 }
             }
-            
-            function clearList(list){
-                while(list.childElementCount > 0){
-                    list.removeChild(list.lastChild);
-                }
-            }
-            
-            function selectEmployees(){
-                for(var i=0;i<selEmployees.options.length;i++){
-                    if (selEmployees.options[i].selected){
-                        addEmployee(selEmployees.options[i]);
-                        selEmployees.options[i].selected = false;
+              
+        }
+        
+        function clearUsers(){
+         	document.getElementById("selUnselectedUsers").options.length=0;
+        }
+        
+         function selectUsers(){
+         		var selUnselectedUsers=document.getElementById("selUnselectedUsers");
+         		var selSelectedUsers=document.getElementById("selSelectedUsers");     
+                for(var i=selUnselectedUsers.options.length-1;i>=0;i--){
+                    if (selUnselectedUsers.options[i].selected){
+                        var opt=new Option(selUnselectedUsers.options[i].text,selUnselectedUsers.options[i].value);
+                        opt.selected=true;
+                        selSelectedUsers.options.add(opt);
+                        selUnselectedUsers.options.remove(i);
                     }
                 }
             }
-            
-            function deSelectEmployees(){
-                var elementsToRemoved = new Array();
-                var options = selSelectedEmployees.options;
-                for(var i=0;i<options.length;i++){
-                    if (options[i].selected){
-                        elementsToRemoved.push(options[i]);
+        
+        function deselectUsers(){
+        		var selUnselectedUsers=document.getElementById("selUnselectedUsers");
+         		var selSelectedUsers=document.getElementById("selSelectedUsers");     
+                for(var i=selSelectedUsers.options.length-1;i>=0;i--){
+                    if (selSelectedUsers.options[i].selected){
+                        selUnselectedUsers.options.add(new Option(selSelectedUsers.options[i].text,selSelectedUsers.options[i].value));
+                        selSelectedUsers.options.remove(i);
                     }
                 }
-                for(i=0;i<elementsToRemoved.length;i++){
-                    selSelectedEmployees.removeChild(elementsToRemoved[i]);
+                setSelected();
+            }     
+             
+        function setSelected(){
+         		var selSelectedUsers=document.getElementById("selSelectedUsers");     
+                for(var i=0;i<selSelectedUsers.options.length;i++){
+                    selSelectedUsers.options[i].selected=true;
+                }
+        }
+        
+        function refreshRooms(){
+            createXMLHttpRequest();   
+	        var begintime=document.getElementById("begintime").value;   	
+	        var endtime=document.getElementById("endtime").value;  
+	        
+	       	var url = "RefreshRoomsServlet?begintime=" + escape(begintime)+"&endtime="+escape(endtime);           
+	        xmlHttp.open("GET", url, true);     
+	        xmlHttp.onreadystatechange = refreshRoomsCallback;
+	        xmlHttp.send(null);
+        }
+        
+         function refreshRoomsCallback() {
+  		   clearMeetingRooms(); 
+           var roomid=document.getElementById("roomid");
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                    var elements = xmlHttp.responseXML.getElementsByTagName("option");                      
+                    for (var i = 0; i < elements.length; i++) {
+	                    var value = elements[i].getElementsByTagName("value")[0].firstChild.nodeValue;
+	                    var text = elements[i].getElementsByTagName("text")[0].firstChild.nodeValue;                
+	                    roomid.options.add(new Option(text,value),i+1);
+                    }       
                 }
             }
+        
+        }
+        
+        function clearMeetingRooms(){
+         	document.getElementById("roomid").options.length=1;
+        }
             
-            function addEmployee(optEmployee){
-                var options = selSelectedEmployees.options;
-                var i = 0;
-                var insertIndex = -1;
-                while(i < options.length){
-                    if (optEmployee.value == options[i].value){
-                        return;
-                    } else if (optEmployee.value < options[i].value) {
-                        insertIndex = i;
-                        break;
-                    }
-                    i++;
-                }
-                var opt = document.createElement("option");
-                opt.value = optEmployee.value;
-                opt.text = optEmployee.text;
-                
-                if (insertIndex == -1){
-                    selSelectedEmployees.appendChild(opt);
-                } else {
-                    selSelectedEmployees.insertBefore(opt, options[insertIndex]);
-                }
-            }            
 	</script>
 </head>
-<body onload="body_load()">
+<body>
     <div class="container">
 		<div class="row">
 			<div class="col-xs-12">
@@ -155,81 +157,78 @@
 								<strong>提示信息:</strong>${requestScope.msg}
 							</div>
 							</c:if>
-							<form class="form-horizontal" role="form" action="TestServlet" method="post">
+							<form class="form-horizontal" role="form" action="BookMeetingServlet?code=add" method="post">
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="meetingname">会议名称</label>
-									<div class="col-lg-5">
+									<div class="col-lg-4">
 									<input id="meetingname" name="meetingname" type="text" placeholder="" maxlength="10" class="form-control" required/>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="capacity">预计参加人数</label>
-									<div class="col-lg-5">
+									<div class="col-lg-4">
 									<input id="capacity" name="capacity" type="text" placeholder="" maxlength="20" class="form-control" required/>
 									</div>
 								</div>
-										
+ 								<% String strTime = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()) + "T" + new SimpleDateFormat("hh:mm").format(Calendar.getInstance().getTime()); %>
 								<div class="form-group">
-									<label class="control-label col-lg-2" for="startdate">预计开始时间</label>
-									<div class="col-lg-3">
-									<input id="startdate" name="startdate" type="date" placeholder="" class="form-control" required/>
-									</div>
-									<div class="col-lg-2">
-									<input id="starttime" name="starttime" type="time" placeholder="" class="form-control" required/>
+									<label class="control-label col-lg-2" for="begintime">预计开始时间</label>
+									<div class="col-lg-4">
+									<input id="begintime" name="begintime" type="datetime-local" placeholder="例如2017-06-30 05:20" value="<%=strTime %>" class="form-control" required/>
 									</div>
 								</div>
-
 								<div class="form-group">
-									<label class="control-label col-lg-2" for="enddate">预计结束时间</label>
-									<div class="col-lg-3">
-									<input id="enddate" name="enddate" type="date" placeholder="" class="form-control" required/>
-									</div>
-									<div class="col-lg-2">
-									<input id="endtime" name="endtime" type="time" placeholder="" class="form-control" required/>
+									<label class="control-label col-lg-2" for="endtime">预计结束时间</label>
+									<div class="col-lg-4">
+									<input id="endtime" name="endtime" type="datetime-local" placeholder="例如2017-06-30 05:20" value="<%=strTime %>" class="form-control" required/>
 									</div>
 								</div>
-										
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="capacity">会议室名称</label>
-									<div class="col-lg-5">
-									<select id="roomid" name="roomid" class="form-control" required>    
-										<option value="1">第一会议室</option>
-										<option value="2">第二会议室</option>
-										<option value="3">第三会议室</option>
-                                     </select>
+									<div class="col-lg-4">
+									<select id="roomid" name="roomid" onfocus="refreshRooms()" class="form-control" required>
+										<option>请选择会议室</option>
+										<c:forEach var="room" items="${requestScope.roomsList}">
+										<option value="${room.roomid}">${room.name}</option>
+										</c:forEach>
+                                    </select>
 									</div>
 								</div>		
 
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="description">会议说明</label>
-									<div class="col-lg-5">
+									<div class="col-lg-4">
 									<textarea class="form-control" id="description" name="description" maxlength="200" rows="5" cols="60" placeholder="200字以内的文字描述"></textarea>
 									</div>
 								</div>
 								
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="description">选择参会人员</label>
-									<div class="col-lg-2">
-										<select id="selDepartments" class="form-control" onchange="fillEmployees()">
+									<div class="col-lg-3">
+										<select id="selDepartments" class="form-control" onchange="showUsers()">
+											<option>请选择部门</option>
+											<c:forEach var="item" items="${requestScope.departmentsList}">
+											<option value="${item.departmentid}">${item.name}</option>
+											</c:forEach>
                                         </select>
                                         <br>
-                                        <select id="selEmployees" class="form-control" style="height:25%;" multiple="true">
+                                        <select id="selUnselectedUsers" class="form-control" style="height:25%;" multiple="true">
                                         </select>
 									</div>
 									<div class="col-lg-1">
-									    <input type="button" class="clickbutton" value="&gt;" onclick="selectEmployees()"/>
-                                        <input type="button" class="clickbutton" value="&lt;" onclick="deSelectEmployees()"/>
+									    <input type="button" class="btn btn-success btn-block" value="+" onclick="selectUsers()"/>
+                                        <input type="button" class="btn btn-danger btn-block" value="-" onclick="deselectUsers()"/>
 									</div>
-									<div class="col-lg-2">
-										<select id="selSelectedEmployees" name="selSelectedEmployees" class="form-control" style="height:32%;" multiple="true">
+									<div class="col-lg-3">
+										<select id="selSelectedUsers" name="selSelectedUsers" class="form-control" style="height:32%;" multiple="true">
                                         </select>
 									</div>									
 								</div>
 																														
 								<div class="form-group">
 									<label class="control-label col-lg-2"></label>
-									<div class="col-lg-3">
+									<div class="col-lg-2">
 									<button class="btn btn-success btn-block" type="submit">预定会议</button>
 									</div>
 									<div class="col-lg-2">

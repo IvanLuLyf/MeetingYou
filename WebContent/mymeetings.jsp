@@ -2,6 +2,8 @@
 	import="java.util.*,meetingmanager.vo.*"
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <html>
 <head>
 	<title>Meeting You</title>
@@ -54,42 +56,16 @@
 								</thead>
 								
 								<tbody>
+									<c:forEach var="item" items="${requestScope.meetings}">
 									<tr>
-										<td>业务洽谈会</td>
-										<td>第一会议室</td>
-										<td>2013-10-12 8:00</td>
-										<td>2013-10-12 12:00</td>
-										<td>2013-10-10 16:00</td>
-										<td>Jerry</td>
+										<td>${item.name}</td>
+										<td>${requestScope.meetingrooms[item.roomid].name}</td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.begintime}" /></td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.endtime}" /></td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.reservetime}" /></td>
+										<td>${requestScope.users[item.reserverid].name}</td>
 										<td>
-											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
-										</td>
-									</tr>
-									<tr>
-										<td>业务洽谈会</td>
-										<td>第一会议室</td>
-										<td>2013-10-12 8:00</td>
-										<td>2013-10-12 12:00</td>
-										<td>2013-10-10 16:00</td>
-										<td>Jerry</td>
-										<td>
-											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
-										</td>
-									</tr>
-									<c:forEach var="usr" items="${requestScope.usersList}">
-									<tr>
-										<td>${usr.name}</td>
-										<td>${usr.username}</td>
-										<td>${usr.phone }</td>
-										<td>${usr.email }</td>
-										<td><button type="button" class="btn btn-sm btn-success"
-											onclick="window.location.href='ApproveServlet?uid=${usr.uid}&oper=yes'">
-												<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 通过
-											</button>
-											<button type="button" class="btn btn-sm btn-danger"
-											onclick="window.location.href='ApproveServlet?uid=${usr.uid}&oper=no'">
-												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 不通过
-											</button>
+											<a class="btn btn-info btn-sm" href="meetingdetails.html">查看详情</a>
 										</td>
 									</tr>
 									</c:forEach>

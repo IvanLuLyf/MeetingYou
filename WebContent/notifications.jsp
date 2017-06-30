@@ -2,6 +2,7 @@
 	import="java.util.*,meetingmanager.vo.*"
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 <head>
 	<title>Meeting You</title>
@@ -52,38 +53,14 @@
 								</thead>
 								
 								<tbody>
+									<c:forEach var="item" items="${requestScope.meetings}">
 									<tr>
-										<td>三季度销售总结会</td>
-										<td>第一会议室</td>
-										<td>2013-11-20 9：00</td>
-										<td>2013-11-20 11：00</td>
+										<td>${item.name}</td>
+										<td>${requestScope.meetingrooms[item.roomid].name}</td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.begintime}" /></td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.endtime}" /></td>
 										<td>
 											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
-										</td>
-									</tr>
-									<tr>
-										<td>与Google合作推广Android技术培训会议</td>
-										<td>第三会议室</td>
-										<td>2013-11-18 9：00</td>
-										<td>2013-11-18 11：00</td>
-										<td>
-											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
-										</td>
-									</tr>
-									<c:forEach var="usr" items="${requestScope.usersList}">
-									<tr>
-										<td>${usr.name}</td>
-										<td>${usr.username}</td>
-										<td>${usr.phone }</td>
-										<td>${usr.email }</td>
-										<td><button type="button" class="btn btn-sm btn-success"
-											onclick="window.location.href='ApproveServlet?uid=${usr.uid}&oper=yes'">
-												<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 通过
-											</button>
-											<button type="button" class="btn btn-sm btn-danger"
-											onclick="window.location.href='ApproveServlet?uid=${usr.uid}&oper=no'">
-												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 不通过
-											</button>
 										</td>
 									</tr>
 									</c:forEach>
@@ -110,40 +87,15 @@
 									</tr>
 								</thead>
 								<tbody>
-				                    <tr>
-				                        <td>三季度销售总结会</td>
-				                        <td>第一会议室</td>
-				                        <td>2013-11-20 9：00</td>
-				                        <td>2013-11-20 11：00</td>
-				                        <td>人员出差</td>
-				                        <td>
-				                            <a class="clickbutton" href="meetingdetails.html">查看详情</a>
-				                        </td>
-				                    </tr>
-				                    <tr>
-				                        <td>与Google合作推广Android技术培训会议</td>
-				                        <td>第三会议室</td>
-				                        <td>2013-11-18 9：00</td>
-				                        <td>2013-11-18 11：00</td>
-				                        <td>人员出差</td>
-				                        <td>
-				                            <a class="clickbutton" href="meetingdetails.html">查看详情</a>
-				                        </td>
-				                    </tr>
-									<c:forEach var="usr" items="${requestScope.usersList}">
+									<c:forEach var="itemc" items="${requestScope.cancelmeetings}">
 									<tr>
-										<td>${usr.name}</td>
-										<td>${usr.username}</td>
-										<td>${usr.phone }</td>
-										<td>${usr.email }</td>
-										<td><button type="button" class="btn btn-sm btn-success"
-											onclick="window.location.href='ApproveServlet?uid=${usr.uid}&oper=yes'">
-												<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 通过
-											</button>
-											<button type="button" class="btn btn-sm btn-danger"
-											onclick="window.location.href='ApproveServlet?uid=${usr.uid}&oper=no'">
-												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 不通过
-											</button>
+										<td>${itemc.name}</td>
+										<td>${requestScope.meetingrooms[itemc.roomid].name}</td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${itemc.begintime}" /></td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${itemc.endtime}" /></td>
+										<td>${itemc.reason}</td>
+										<td>
+											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
 										</td>
 									</tr>
 									</c:forEach>
