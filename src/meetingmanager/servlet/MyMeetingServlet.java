@@ -41,19 +41,53 @@ public class MyMeetingServlet extends HttpServlet {
 		Integer uid = (Integer)request.getSession().getAttribute("uid");
 		if(uid!=null){
 			MeetingDAO meetingDAO = new MeetingDAO();
-			List<Meeting> meetings = meetingDAO.getMeetingByMemberUid(uid);
-			request.setAttribute("meetings", meetings);
-			
 			MeetingRoomDAO meetingRoomDAO = new MeetingRoomDAO();
-			Map<Integer, MeetingRoom> meetingrooms = meetingRoomDAO.selectAllMap();
-			request.setAttribute("meetingrooms", meetingrooms);
-
 			UserDAO userDAO = new UserDAO();
-			Map<Integer, User> users = userDAO.selectAllMap();
-			request.setAttribute("users", users);
 			
-			request.getRequestDispatcher("mymeetings.jsp").forward(request,
-					response);
+			String code = request.getParameter("code");
+			
+			if(code==null || code.equals("")){
+				List<Meeting> meetings = meetingDAO.getMeetingByMemberUid(uid);
+				request.setAttribute("meetings", meetings);
+				
+				
+				Map<Integer, MeetingRoom> meetingrooms = meetingRoomDAO.selectAllMap();
+				request.setAttribute("meetingrooms", meetingrooms);
+	
+				
+				Map<Integer, User> users = userDAO.selectAllMap();
+				request.setAttribute("users", users);
+				
+				request.getRequestDispatcher("mymeetings.jsp").forward(request,
+						response);				
+			}else if(code.equals("detail")){
+				String strMeetingid = request.getParameter("mid");
+				if(strMeetingid!=null){
+					Integer meetingid = Integer.parseInt(strMeetingid);
+					Meeting meeting = meetingDAO.getMeetingById(meetingid);	
+					request.setAttribute("meeting", meeting);
+					
+					Map<Integer, MeetingRoom> meetingrooms = meetingRoomDAO.selectAllMap();
+					request.setAttribute("meetingrooms", meetingrooms);
+		
+					Map<Integer, User> users = userDAO.selectAllMap();
+					request.setAttribute("users", users);
+					
+					String[] strMember = meeting.getMember().replace("[", "").replace("]", "").split(",");
+					ArrayList<Integer> members = new ArrayList<Integer>();
+					for(int i=0;i<strMember.length;i++){
+						members.add(Integer.parseInt(strMember[i].trim()));
+					}
+					request.setAttribute("members", members);
+					
+					if(meeting.getReserverid().equals(uid)){
+						request.setAttribute("isMine", "1");
+					}
+					
+					request.getRequestDispatcher("meetingdetails.jsp").forward(request,
+							response);						
+				}
+			}
 		}else{
 			request.getRequestDispatcher("login.jsp").forward(request,
 					response);

@@ -9,13 +9,14 @@ import meetingmanager.vo.*;
 public class MeetingDAO {
 	private Connection conn = null;
 
-	public List<Meeting> getMeetingByMemberUid(Integer uid){
+	public List<Meeting> getMeetingByMemberUid(Integer uid) {
 		conn = DataBaseConnection.getConnection();
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		Meeting meeting = new Meeting();
 		try {
 			PreparedStatement psd = null;
-			String sql = "select * from mm_meeting where member REGEXP '[[:<:]]" + uid + "[[:>:]]' ";
+			String sql = "select * from mm_meeting where member REGEXP '[[:<:]]"
+					+ uid + "[[:>:]]' ";
 			psd = conn.prepareStatement(sql);
 			ResultSet rs = psd.executeQuery(sql);
 			while (rs.next()) {
@@ -30,6 +31,7 @@ public class MeetingDAO {
 				meeting.setBegintime(rs.getTimestamp("begintime"));
 				meeting.setEndtime(rs.getTimestamp("endtime"));
 				meeting.setCanceltime(rs.getTimestamp("canceltime"));
+				meeting.setDescription(rs.getString("description"));
 				meeting.setMember(rs.getString("member"));
 				meeting.setReason(rs.getString("reason"));
 				meetings.add(meeting);
@@ -42,14 +44,16 @@ public class MeetingDAO {
 		}
 		return meetings;
 	}
-	
-	public List<Meeting> getRecentMeetingByMemberUid(Integer uid){
+
+	public List<Meeting> getRecentMeetingByMemberUid(Integer uid) {
 		conn = DataBaseConnection.getConnection();
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		Meeting meeting = new Meeting();
 		try {
 			PreparedStatement psd = null;
-			String sql = "select * from mm_meeting where member REGEXP '[[:<:]]" + uid + "[[:>:]]' and TIMESTAMPDIFF(SECOND,NOW(),begintime) BETWEEN 0 AND 604800 ";
+			String sql = "select * from mm_meeting where member REGEXP '[[:<:]]"
+					+ uid
+					+ "[[:>:]]' and TIMESTAMPDIFF(SECOND,NOW(),begintime) BETWEEN 0 AND 604800 ";
 			psd = conn.prepareStatement(sql);
 			ResultSet rs = psd.executeQuery(sql);
 			while (rs.next()) {
@@ -64,6 +68,7 @@ public class MeetingDAO {
 				meeting.setBegintime(rs.getTimestamp("begintime"));
 				meeting.setEndtime(rs.getTimestamp("endtime"));
 				meeting.setCanceltime(rs.getTimestamp("canceltime"));
+				meeting.setDescription(rs.getString("description"));
 				meeting.setMember(rs.getString("member"));
 				meeting.setReason(rs.getString("reason"));
 				meetings.add(meeting);
@@ -76,14 +81,50 @@ public class MeetingDAO {
 		}
 		return meetings;
 	}
-	
-	public List<Meeting> getCancelMeetingByMemberUid(Integer uid){
+
+	public Meeting getMeetingById(Integer meetingid) {
+		conn = DataBaseConnection.getConnection();
+		Meeting meeting = null;
+		try {
+			PreparedStatement psd = null;
+			String sql = "select * from mm_meeting where meetingid="
+					+ meetingid;
+			psd = conn.prepareStatement(sql);
+			ResultSet rs = psd.executeQuery(sql);
+			if (rs.next()) {
+				meeting = new Meeting();
+				meeting = new Meeting();
+				meeting.setMeetingid(rs.getInt("meetingid"));
+				meeting.setRoomid(rs.getInt("roomid"));
+				meeting.setReserverid(rs.getInt("reserverid"));
+				meeting.setName(rs.getString("name"));
+				meeting.setCapacity(rs.getInt("capacity"));
+				meeting.setStatus(rs.getInt("status"));
+				meeting.setReservetime(rs.getTimestamp("reservetime"));
+				meeting.setBegintime(rs.getTimestamp("begintime"));
+				meeting.setEndtime(rs.getTimestamp("endtime"));
+				meeting.setCanceltime(rs.getTimestamp("canceltime"));
+				meeting.setDescription(rs.getString("description"));
+				meeting.setMember(rs.getString("member"));
+				meeting.setReason(rs.getString("reason"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+		return meeting;
+	}
+
+	public List<Meeting> getCancelMeetingByMemberUid(Integer uid) {
 		conn = DataBaseConnection.getConnection();
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		Meeting meeting = new Meeting();
 		try {
 			PreparedStatement psd = null;
-			String sql = "select * from mm_meeting where member REGEXP '[[:<:]]" + uid + "[[:>:]]' and status=-1 order by meetingid desc";
+			String sql = "select * from mm_meeting where member REGEXP '[[:<:]]"
+					+ uid + "[[:>:]]' and status=-1 order by meetingid desc";
 			psd = conn.prepareStatement(sql);
 			ResultSet rs = psd.executeQuery(sql);
 			while (rs.next()) {
@@ -98,6 +139,7 @@ public class MeetingDAO {
 				meeting.setBegintime(rs.getTimestamp("begintime"));
 				meeting.setEndtime(rs.getTimestamp("endtime"));
 				meeting.setCanceltime(rs.getTimestamp("canceltime"));
+				meeting.setDescription(rs.getString("description"));
 				meeting.setMember(rs.getString("member"));
 				meeting.setReason(rs.getString("reason"));
 				meetings.add(meeting);
@@ -110,14 +152,15 @@ public class MeetingDAO {
 		}
 		return meetings;
 	}
-	
-	public List<Meeting> getMeetingByReserverUid(Integer uid){
+
+	public List<Meeting> getMeetingByReserverUid(Integer uid) {
 		conn = DataBaseConnection.getConnection();
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		Meeting meeting = new Meeting();
 		try {
 			PreparedStatement psd = null;
-			String sql = "select * from mm_meeting where reserverid=" + uid + " order by meetingid desc";
+			String sql = "select * from mm_meeting where reserverid=" + uid
+					+ " order by meetingid desc";
 			psd = conn.prepareStatement(sql);
 			ResultSet rs = psd.executeQuery(sql);
 			while (rs.next()) {
@@ -132,6 +175,7 @@ public class MeetingDAO {
 				meeting.setBegintime(rs.getTimestamp("begintime"));
 				meeting.setEndtime(rs.getTimestamp("endtime"));
 				meeting.setCanceltime(rs.getTimestamp("canceltime"));
+				meeting.setDescription(rs.getString("description"));
 				meeting.setMember(rs.getString("member"));
 				meeting.setReason(rs.getString("reason"));
 				meetings.add(meeting);
@@ -144,7 +188,7 @@ public class MeetingDAO {
 		}
 		return meetings;
 	}
-	
+
 	public void insert(Meeting meeting) {
 		conn = DataBaseConnection.getConnection();
 		String sql = "insert into mm_meeting"
@@ -155,10 +199,10 @@ public class MeetingDAO {
 			pstmt.setInt(1, meeting.getRoomid());
 			pstmt.setInt(2, meeting.getReserverid());
 			pstmt.setString(3, meeting.getName());
-			
+
 			pstmt.setInt(4, meeting.getCapacity());
 			pstmt.setInt(5, meeting.getStatus());
-			
+
 			pstmt.setTimestamp(6, meeting.getReservetime());
 			pstmt.setTimestamp(7, meeting.getBegintime());
 			pstmt.setTimestamp(8, meeting.getEndtime());
@@ -176,11 +220,42 @@ public class MeetingDAO {
 			DataBaseConnection.closeConnection();
 		}
 	}
+
+	public void cancelMeeting(Integer uid, Integer meetingid, String reason) {
+		conn = DataBaseConnection.getConnection();
+		String sql = "update mm_meeting set status=-1,reason='" + reason + "' where meetingid="
+				+ meetingid + " and reserverid=" + uid;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+	}
 	
+	public void enableMeeting(Integer uid, Integer meetingid) {
+		conn = DataBaseConnection.getConnection();
+		String sql = "update mm_meeting set status=0 where meetingid="
+				+ meetingid + " and reserverid=" + uid;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+	}
 	public static void main(String[] args) {
 		MeetingDAO dao = new MeetingDAO();
 		List<Meeting> meetings = dao.getCancelMeetingByMemberUid(1);
-		System.out.println(meetings);	
+
+		Meeting meeting = dao.getMeetingById(1);
+		System.out.println(meeting);
+
+		System.out.println(meetings);
 	}
 
 }

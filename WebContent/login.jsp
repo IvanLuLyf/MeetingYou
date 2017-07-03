@@ -40,7 +40,7 @@
 			</div>
 			</c:if>
 			<label for="username" class="sr-only">账号名</label>
-			<input type="text" id="username" name="username" class="form-control" placeholder="账号名" required autofocus>
+			<input type="email" id="username" name="username" class="form-control" placeholder="账号名" required autofocus>
 			<label for="password" class="sr-only">密码</label>
 			<input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
 			<label for="timelength">登录时长</label>

@@ -56,10 +56,10 @@
 											<td>${item.number}</td>
 											<td>${item.name}</td>
 											<td>${item.capacity}</td>
-											<c:if test="${item.status==1}"><td>启用</td></c:if>
-											<c:if test="${item.status==0}"><td>停用</td></c:if>
-											<c:if test="${item.status==-1}"><td>删除</td></c:if>											
-											<td><a class="btn btn-info" href="ViewOneMeetingRoomServlet?roomid=${item.roomid}">查看详情</a></td>
+											<c:if test="${item.status==1}"><td><span class="label label-success">启用</span></td></c:if>
+											<c:if test="${item.status==0}"><td><span class="label label-warning">停用</span></td></c:if>
+											<c:if test="${item.status==-1}"><td><span class="label label-danger">删除</span></td></c:if>											
+											<td><a class="btn btn-info btn-sm" href="ViewOneMeetingRoomServlet?roomid=${item.roomid}">查看详情</a></td>
 										</tr>
 									</c:forEach>
 								</table>

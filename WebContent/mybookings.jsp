@@ -62,7 +62,7 @@
 										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.endtime}" /></td>
 										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.reservetime}" /></td>
 										<td>
-										<a class="btn btn-info btn-sm" href="mymeetingdetails.html">查看/撤销</a>
+										<a class="btn btn-info btn-sm" href="MyMeetingServlet?code=detail&mid=${item.meetingid}">查看/撤销</a>
 										</td>
 									</tr>
 									</c:forEach>

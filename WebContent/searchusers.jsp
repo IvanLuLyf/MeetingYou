@@ -12,14 +12,62 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-        function goToOnePage(name,username,status) {
-           var pageNum=document.getElementById("pageNum").value;
-           if(pageNum==""){
-           	 window.location.href="#";    
-           }else{
-          	 window.location.href="SearchUsersServlet?name="+name+"&username="+username+"&verified="+verified+"&pageNum="+pageNum;        
-           }
-        }
+	function goToOnePage(name,username,status) {
+		var pageNum=document.getElementById("pageNum").value;
+		if(pageNum==""){
+			window.location.href="#";    
+		}else{
+			window.location.href="SearchUsersServlet?name="+name+"&username="+username+"&verified="+verified+"&pageNum="+pageNum;        
+		}
+	}
+        
+	$(function(){
+		$('#opencloseModal').on('show.bs.modal', function (event) {
+		console.log("test");
+		var button = $(event.relatedTarget);
+		var uid = button.data('uid');
+		var act = $('#btnDoActionIt[data-uid="' + uid + '"]').attr("data-act");
+		
+		console.log(act);
+		
+		$("#btnDoAction").click(function(){
+			if(act=="close"){
+				txt=$.ajax({url:"./ApproveServlet?code=verify&uid=" + uid +"&action=close",async:false});
+				if(txt.responseText=="ok"){
+					btnDoActionIt = $('#btnDoActionIt[data-uid="' + uid + '"]');
+					btnDoActionIt.attr("class","btn btn-success");
+					btnDoActionIt.attr("data-act","enable");
+					btnDoActionIt.text("启用账号");
+					$('#opencloseModal').modal('hide');
+				}
+			}else if(act=="enable"){
+				txt=$.ajax({url:"./ApproveServlet?code=verify&uid=" + uid +"&action=yes",async:false});
+				if(txt.responseText=="ok"){
+					btnDoActionIt = $('#btnDoActionIt[data-uid="' + uid + '"]');
+					btnDoActionIt.attr("class","btn btn-danger");
+					btnDoActionIt.attr("data-act","close");
+					btnDoActionIt.text("关闭账号");
+					$('#opencloseModal').modal('hide');
+				}
+			}
+		});
+		
+		var modal = $(this);
+		if(act=="close"){
+			modal.find('.modal-title').text("关闭账号");
+			modal.find('.modal-body').text("是否关闭账号");
+			$("#btnDoAction").attr("class","btn btn-danger");
+		}else{
+			modal.find('.modal-title').text("启用账号");
+			modal.find('.modal-body').text("是否启用账号");
+			$("#btnDoAction").attr("class","btn btn-success");
+		}
+		});
+	});
+	
+	$(document).ready(function(){
+
+		});
 	</script>
 </head>
 <body>
@@ -28,6 +76,23 @@
 			<div class="col-xs-12">
 			<%@include file="header.jsp"%>
 			<div class="row">
+				<div class="modal fade" id="opencloseModal" tabindex="-1" role="dialog" aria-labelledby="opencloseModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="opencloseModalLabel">关闭账号</h4>
+							</div>
+							<div class="modal-body">
+								是否关闭该账号
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="btnDoAction" class="btn btn-default">确定</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+							</div>
+						</div>
+					</div>
+				</div>			
 				<div class="col-xs-2">
 				<%@include file="sidebar.jsp" %>
 				</div>
@@ -161,11 +226,11 @@
 									<td>${item.phone}</td>
 									<td>${item.email}</td>
 									<c:if test="${item.verified eq 2 }">
-										<td>账号已关闭</td>
+										<td><button type="button" id="btnDoActionIt" class="btn btn-success" data-toggle="modal" data-target="#opencloseModal" data-uid="${item.uid}" data-act="enable">启用账号</button>
+										</td>
 									</c:if>
 									<c:if test="${item.verified ne 2 }">
-										<td><a class="clickbutton"
-											href="ApproveServlet?uid=${item.uid}&name=${param.name}&username=${param.username}&verified=${param.verified}&pageNum=${requestScope.pageNum}&oper=close">关闭账号</a>
+										<td><button type="button" id="btnDoActionIt" class="btn btn-danger" data-toggle="modal" data-target="#opencloseModal" data-uid="${item.uid}" data-act="close">关闭账号</button>
 										</td>
 									</c:if>
 								</tr>

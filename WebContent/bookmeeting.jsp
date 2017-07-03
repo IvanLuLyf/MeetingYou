@@ -120,7 +120,22 @@
         function clearMeetingRooms(){
          	document.getElementById("roomid").options.length=1;
         }
-            
+        
+        
+        function checkTime(){
+        	var txtBegintime = document.getElementById("begintime");
+        	var txtEndtime = document.getElementById("endtime");
+        	var beginTimestamp = new Date(txtBegintime.value).getTime();
+        	var endTimestamp = new Date(txtEndtime.value).getTime();
+            if (endTimestamp<=beginTimestamp) {
+                classes = txtEndtime.parentNode.getAttribute("class");
+                txtEndtime.parentNode.setAttribute("class", classes + " has-error");
+            }else{
+                classes = txtEndtime.parentNode.getAttribute("class");
+                classes = classes.replace(" has-error","");
+                txtEndtime.parentNode.setAttribute("class", classes);
+            }
+        }
 	</script>
 </head>
 <body>
@@ -181,7 +196,7 @@
 								<div class="form-group">
 									<label class="control-label col-lg-2" for="endtime">预计结束时间</label>
 									<div class="col-lg-4">
-									<input id="endtime" name="endtime" type="datetime-local" placeholder="例如2017-06-30 05:20" value="<%=strTime %>" class="form-control" required/>
+									<input id="endtime" name="endtime" type="datetime-local" onchange="checkTime()" placeholder="例如2017-06-30 05:20" value="<%=strTime %>" class="form-control" required/>
 									</div>
 								</div>
 								<div class="form-group">
@@ -221,7 +236,7 @@
                                         <input type="button" class="btn btn-danger btn-block" value="-" onclick="deselectUsers()"/>
 									</div>
 									<div class="col-lg-3">
-										<select id="selSelectedUsers" name="selSelectedUsers" class="form-control" style="height:32%;" multiple="true">
+										<select id="selSelectedUsers" name="selSelectedUsers" class="form-control" style="height:32%;" multiple="true" required>
                                         </select>
 									</div>									
 								</div>

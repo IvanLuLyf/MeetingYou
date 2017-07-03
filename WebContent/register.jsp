@@ -5,7 +5,7 @@
 <head>
 <title>Meeting You</title>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="styles/login.css" />
+<link rel="stylesheet" href="styles/reg.css" />
 <style>
 	body, html {
 		position: absolute;

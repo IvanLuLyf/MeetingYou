@@ -65,7 +65,7 @@
 										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.reservetime}" /></td>
 										<td>${requestScope.users[item.reserverid].name}</td>
 										<td>
-											<a class="btn btn-info btn-sm" href="meetingdetails.html">查看详情</a>
+											<a class="btn btn-info btn-sm" href="MyMeetingServlet?code=detail&mid=${item.meetingid}">查看详情</a>
 										</td>
 									</tr>
 									</c:forEach>

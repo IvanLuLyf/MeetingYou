@@ -65,6 +65,29 @@ public class BookMeetingServlet extends HttpServlet {
 			System.out.println(meetingRooms);
 			request.getRequestDispatcher("bookmeeting.jsp").forward(request,
 					response);
+		} else if (code != null && code.equals("cancel")) {
+			MeetingDAO dao = new MeetingDAO();
+			Integer uid = (Integer) request.getSession().getAttribute("uid");
+			String strMid = request.getParameter("mid");
+			String strReason = request.getParameter("reason");
+			if (strMid != null) {
+				Integer meetingid = Integer.parseInt(strMid);
+				dao.cancelMeeting(uid, meetingid, strReason);
+				request.setAttribute("msg", "成功取消会议");
+				request.getRequestDispatcher("MyMeetingServlet?code=detail&mid=" + strMid).forward(request,
+						response);
+			}
+		}  else if (code != null && code.equals("enable")) {
+			MeetingDAO dao = new MeetingDAO();
+			Integer uid = (Integer) request.getSession().getAttribute("uid");
+			String strMid = request.getParameter("mid");
+			if (strMid != null) {
+				Integer meetingid = Integer.parseInt(strMid);
+				dao.enableMeeting(uid, meetingid);
+				request.setAttribute("msg", "成功恢复会议");
+				request.getRequestDispatcher("MyMeetingServlet?code=detail&mid=" + strMid).forward(request,
+						response);
+			}
 		} else if (code != null && code.equals("add")) {
 			Integer uid = (Integer) request.getSession().getAttribute("uid");
 			String strRoomid = request.getParameter("roomid");
@@ -77,8 +100,12 @@ public class BookMeetingServlet extends HttpServlet {
 			String[] strMembers = request
 					.getParameterValues("selSelectedUsers");
 			ArrayList<String> arrMembers = new ArrayList<String>();
-			for (int i = 0; i < strMembers.length; i++) {
-				arrMembers.add(strMembers[i]);
+			if (strMembers != null) {
+				for (int i = 0; i < strMembers.length; i++) {
+					if (!arrMembers.contains(strMembers[i])) {
+						arrMembers.add(strMembers[i]);
+					}
+				}
 			}
 
 			Meeting meeting = new Meeting();

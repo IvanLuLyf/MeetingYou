@@ -45,7 +45,7 @@ public class MeetingRoomDAO {
 
 		try {
 			Statement st = null;
-			String sql = "SELECT * FROM mm_room WHERE roomid NOT IN (SELECT roomid FROM mm_meeting WHERE (begintime BETWEEN '" + beginTime + "' AND '" + endTime + "') OR (endtime BETWEEN '" + beginTime + "' AND '" + endTime + "') )";
+			String sql = "SELECT * FROM mm_room WHERE status = 1 and roomid NOT IN (SELECT roomid FROM mm_meeting WHERE (begintime BETWEEN '" + beginTime + "' AND '" + endTime + "') OR (endtime BETWEEN '" + beginTime + "' AND '" + endTime + "') )";
 			st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			MeetingRoom meetingRoom;

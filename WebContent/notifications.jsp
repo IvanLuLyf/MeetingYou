@@ -60,7 +60,7 @@
 										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.begintime}" /></td>
 										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${item.endtime}" /></td>
 										<td>
-											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
+											<a class="clickbutton" href="MyMeetingServlet?code=detail&mid=${item.meetingid}">查看详情</a>
 										</td>
 									</tr>
 									</c:forEach>
@@ -95,7 +95,7 @@
 										<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm" value="${itemc.endtime}" /></td>
 										<td>${itemc.reason}</td>
 										<td>
-											<a class="clickbutton" href="meetingdetails.html">查看详情</a>
+											<a class="clickbutton" href="MyMeetingServlet?code=detail&mid=${itemc.meetingid}">查看详情</a>
 										</td>
 									</tr>
 									</c:forEach>

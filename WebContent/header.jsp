@@ -1,11 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" import="meetingmanager.vo.*"%>
+<%
+int hRoleid = -1;
+if(session.getAttribute("roleid")!=null){
+	hRoleid = (Integer)session.getAttribute("roleid");
+}
+%>
 			<nav class="navbar navbar-default" role="navigation">
 				<div class="navbar-header">
 					 
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-					</button> <a class="navbar-brand" href="#">Meeting You</a>
+					</button> <a class="navbar-brand" href="./index.jsp">Meeting You</a>
 				</div>
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -13,14 +19,17 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
-								<li><a href="notifications.html">最新通知</a>
+								<li><a href="NotificationServlet">最新通知</a>
 								</li>
-								<li><a href="mybookings.html">我的预定</a>
+								<li><a href="MyBookingServlet">我的预定</a>
 								</li>
-								<li><a href="mymeetings.html">我的会议</a>
+								<li><a href="MyMeetingServlet">我的会议</a>
 								</li>
 							</ul>
 						</li>
+<%
+if(hRoleid==1){
+%>						
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">人员管理<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
@@ -28,18 +37,21 @@
 								</li>
 								<li><a href="ViewAllUsersServlet?code=approve">注册审批</a>
 								</li>
-								<li><a href="searchemployees.html">搜索员工</a>
+								<li><a href="searchusers.jsp">搜索员工</a>
 								</li>
 							</ul>
 						</li>
+<%
+}
+%>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">会议预定<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
-								<li><a href="addmeetingroom.html">添加会议室</a>
+								<li><a href="addmeetingroom.jsp">添加会议室</a>
 								</li>
-								<li><a href="meetingrooms.html">查看会议室</a>
+								<li><a href="ViewAllRoomsServlet?code=viewall">查看会议室</a>
 								</li>
-								<li><a href="bookmeeting.html">预定会议</a>
+								<li><a href="BookMeetingServlet?code=prepare">预定会议</a>
 								</li>
 							</ul>
 						</li>							
