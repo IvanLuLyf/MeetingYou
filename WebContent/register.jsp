@@ -4,29 +4,30 @@
 <html>
 <head>
 <title>Meeting You</title>
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="styles/reg.css" />
-<style>
-	body, html {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-
-		margin: 0;
-		padding: 0;
-	}
-	#background {
-		position: fixed;
-		top: 0;
-		left: 0;
-
-		z-index: -100;
-	}
-</style>
-<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
-<script type="text/javascript">
+	<script src="js/jquery.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="styles/reg.css" />
+	<style>
+		body, html {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+	
+			margin: 0;
+			padding: 0;
+		}
+		#background {
+			position: fixed;
+			top: 0;
+			left: 0;
+	
+			z-index: -100;
+		}
+	</style>
+	<script type="text/javascript">
 	//使用ajax方法访问，验证账户名是否存在
 	function validate() {
 		$.ajax({
@@ -55,14 +56,13 @@
 
 	//验证两次密码是否相同
 	function check() {
-		if (formReg.firstpassword.value != formReg.secondpassword.value) {
+		if (formReg.firstpassword.value != formReg.secondpassword.value) {	
 			confirminfo.innerHTML = "<font color=red>两次输入的密码不相符</font>";
 		} else {
 			confirminfo.innerHTML = "<font color=green>两次输入的密码相符</font>";
 		}
 	}
-</script>
-
+	</script>
 </head>
 <body>
 	<canvas id="background"></canvas>
@@ -77,15 +77,16 @@
 				<strong>提示信息:</strong>${requestScope.msg}
 			</div>
 			</c:if>
-						
+			<div id="formAlert" class="alert alert-info">
+				<a href="#" class="close" data-dismiss="alert">&times;</a>
+				<strong>提示信息:</strong>aaaaaaaaa
+			</div>			
 			<label for="username" class="sr-only">账户名</label>
 			<input type="text" id="username" name="username"
 				maxlength="20" value="${param.username}" onchange="validate()"
 				class="form-control" placeholder="账号名" required autofocus>
 			<div id="validateMessage"></div>
-			
-			<br>
-			
+						
 			<label for="password" class="sr-only">密码</label>
 			<input type="password" id="firstpassword" name="password" maxlength="20"
 				class="form-control" placeholder="请输入6位以上的密码" required>
@@ -94,9 +95,7 @@
 			<input type="password" id="secondpassword" name="password" maxlength="20" onchange="check()"
 				class="form-control" placeholder="确认密码" required>
 			<div id="confirminfo"></div>
-			
-			<br>
-			
+					
 			<label for="name" class="sr-only">姓名</label>
 			<input type="text" id="name" name="name" maxlength="20" value="${param.name}"
 				class="form-control" placeholder="姓名" required>	
@@ -106,7 +105,7 @@
 				class="form-control" placeholder="联系电话" required>	
 			
 			<label for="email" class="sr-only">电子邮件</label>
-			<input type="text" id="email" name="email" maxlength="20" value="${param.email}"
+			<input type="email" id="email" name="email" maxlength="20" value="${param.email}"
 				class="form-control" placeholder="电子邮件" required>	
 			
 			<label for="deptid" class="sr-only">所在部门</label>

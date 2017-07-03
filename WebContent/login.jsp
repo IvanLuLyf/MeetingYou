@@ -5,9 +5,11 @@
 <html>
 <head>
 <title>Meeting You</title>
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="styles/login.css" />
-<style>
+	<script src="js/jquery.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="styles/login.css" />
+	<style>
 	body, html {
 		position: absolute;
 		top: 0;
@@ -25,7 +27,7 @@
 
 		z-index: -100;
 	}
-</style>
+	</style>
 </head>
 <body>
 	<canvas id="background"></canvas>
@@ -40,7 +42,7 @@
 			</div>
 			</c:if>
 			<label for="username" class="sr-only">账号名</label>
-			<input type="email" id="username" name="username" class="form-control" placeholder="账号名" required autofocus>
+			<input type="text" id="username" name="username" class="form-control" placeholder="账号名" required autofocus>
 			<label for="password" class="sr-only">密码</label>
 			<input type="password" id="password" name="password" class="form-control" placeholder="密码" required>
 			<label for="timelength">登录时长</label>
@@ -52,7 +54,6 @@
 			<br>
 			<button class="btn btn-lg btn-success btn-block" type="submit">登录</button>
 			<input type="button" value="注册" class="btn btn-lg btn-info btn-block" onclick="window.location.href='ViewAllDepartmentsServlet?code=register'" />
-			<input type="button" value="返回" class="btn btn-lg btn-default btn-block" onclick="window.history.back();" />
 		</form>
 	</div>
 </body>
