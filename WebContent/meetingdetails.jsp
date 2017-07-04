@@ -16,7 +16,7 @@
 <body>
     <div class="container">
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-xs-12 col-sm-12 col-md-12">
 			<%@include file="header.jsp"%>
 			<div class="row">
 				<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel">
@@ -62,10 +62,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-2">
+				<div class="hidden-xs col-sm-4 col-md-2">
 				<%@include file="sidebar.jsp" %>
 				</div>
-				<div class="col-xs-10">
+				<div class="col-xs-12 col-sm-8 col-md-10">
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Meeting You</a> <span class="divider"></span>
@@ -90,6 +90,7 @@
 							</h3>
 						</div>
 						<div class="panel-body">
+							<div class="table-responsive">
 							<table class="table table-responsive table-hover table-striped">
 								<tr>
 									<td>会议名称</td>
@@ -112,6 +113,7 @@
 									<td>${requestScope.meeting.description}</td>
 								</tr>
 							</table>
+							</div>
 							<c:if test="${requestScope.isMine!=null && requestScope.meeting.status==0}">
 							<button class="btn btn-danger"  data-toggle="modal" data-target="#cancelModal">取消会议</button>
 							</c:if>
@@ -129,7 +131,8 @@
 							</h3>
 						</div>
 						<div class="panel-body">
-							<table class="table table-responsive table-hover table-striped">
+							<div class="table-responsive">
+							<table class="table table-hover table-striped">
 								<thead>
 									<tr>
 										<th>姓名</th>
@@ -148,6 +151,7 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							</div>
 						</div>
 					</div>					
 				</div>

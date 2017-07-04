@@ -140,7 +140,34 @@ public class UserDAO {
 			DataBaseConnection.closeConnection();
 		}
 	}
-
+	
+	public int updatePassword(int uid, String originPassword, String newPassword) {
+		conn = DataBaseConnection.getConnection();
+		int flag=0;
+		try {
+			PreparedStatement st = null;
+			String sql = "select * from mm_user where uid=" + uid
+					+ " and  password='" + originPassword + "'";
+			st = conn.prepareStatement(sql);
+			ResultSet rs = st.executeQuery(sql);
+			if (rs.next() == true) {
+				String updatesql = "update mm_user set password=" + newPassword + " where uid="
+				+ uid + " and password='" + originPassword + "'";
+				PreparedStatement pstmt = conn.prepareStatement(updatesql);
+				pstmt.executeUpdate();
+				flag = 1;
+			}else{
+				flag = 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			flag = -1;
+		} finally {
+			DataBaseConnection.closeConnection();
+		}
+		return flag;
+	}
+	
 	// 根据姓名、用户名、状态， 查询所有员工信息，返回到集合中。
 	public List<User> selectUsersByNameStatus(String name, String username, int verified) {
 		conn = DataBaseConnection.getConnection();

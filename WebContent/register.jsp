@@ -4,6 +4,8 @@
 <html>
 <head>
 <title>Meeting You</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="js/jquery.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -39,14 +41,15 @@
 			success : function(message) {
 				var validateMessage = $("#validateMessage");
 				var data = JSON.parse(message);
-				validateMessage.html(data.msg);
 				if (data.flag) {
-					validateMessage.css({
-						color : "green"
+					$("#username").css({
+						color : "green",
+						background : "#d6e9c6"
 					});
 				} else {
-					validateMessage.css({
-						color : "red"
+					$("#username").css({
+						color : "red",
+						background : "#ebccd1"
 					});
 				}
 
@@ -56,10 +59,24 @@
 
 	//验证两次密码是否相同
 	function check() {
-		if (formReg.firstpassword.value != formReg.secondpassword.value) {	
-			confirminfo.innerHTML = "<font color=red>两次输入的密码不相符</font>";
+		if (formReg.firstpassword.value != formReg.secondpassword.value) {
+			$("#firstpassword").css({
+				color : "red",
+				background : "#ebccd1"
+			});
+			$("#secondpassword").css({
+				color : "red",
+				background : "#ebccd1"
+			});
 		} else {
-			confirminfo.innerHTML = "<font color=green>两次输入的密码相符</font>";
+			$("#firstpassword").css({
+				color : "green",
+				background : "#d6e9c6"
+			});
+			$("#secondpassword").css({
+				color : "green",
+				background : "#d6e9c6"
+			});
 		}
 	}
 	</script>
@@ -77,15 +94,11 @@
 				<strong>提示信息:</strong>${requestScope.msg}
 			</div>
 			</c:if>
-			<div id="formAlert" class="alert alert-info">
-				<a href="#" class="close" data-dismiss="alert">&times;</a>
-				<strong>提示信息:</strong>aaaaaaaaa
-			</div>			
+			
 			<label for="username" class="sr-only">账户名</label>
 			<input type="text" id="username" name="username"
 				maxlength="20" value="${param.username}" onchange="validate()"
 				class="form-control" placeholder="账号名" required autofocus>
-			<div id="validateMessage"></div>
 						
 			<label for="password" class="sr-only">密码</label>
 			<input type="password" id="firstpassword" name="password" maxlength="20"
@@ -94,8 +107,7 @@
 			<label for="password" class="sr-only">确认密码</label>
 			<input type="password" id="secondpassword" name="password" maxlength="20" onchange="check()"
 				class="form-control" placeholder="确认密码" required>
-			<div id="confirminfo"></div>
-					
+			
 			<label for="name" class="sr-only">姓名</label>
 			<input type="text" id="name" name="name" maxlength="20" value="${param.name}"
 				class="form-control" placeholder="姓名" required>	

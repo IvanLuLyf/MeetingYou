@@ -16,7 +16,7 @@ if(session.getAttribute("roleid")!=null){
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="dropdown">
+						<li class="dropdown hidden-sm hidden-md hidden-lg">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li><a href="NotificationServlet">最新通知</a>
@@ -30,7 +30,7 @@ if(session.getAttribute("roleid")!=null){
 <%
 if(hRoleid==1){
 %>						
-						<li class="dropdown">
+						<li class="dropdown hidden-sm hidden-md hidden-lg">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">人员管理<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li><a href="ViewAllDepartmentsServlet?code=viewalldepartments">部门管理</a>
@@ -44,7 +44,7 @@ if(hRoleid==1){
 <%
 }
 %>
-						<li class="dropdown">
+						<li class="dropdown hidden-sm hidden-md hidden-lg">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">会议预定<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li><a href="addmeetingroom.jsp">添加会议室</a>
@@ -64,12 +64,12 @@ if(hRoleid==1){
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">欢迎您，<%=nameString%><strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="changepassword.html">修改密码</a>
+									<a href="changepassword.jsp">修改密码</a>
 								</li>
 								<li class="divider">
 								</li>
 								<li>
-									<a href="#">退出</a>
+									<a href="LogoutServlet">退出</a>
 								</li>
 							</ul>
 						</li>

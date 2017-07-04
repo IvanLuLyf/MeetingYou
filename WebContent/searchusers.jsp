@@ -73,7 +73,7 @@
 <body>
     <div class="container">
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-xs-12 col-sm-12 col-md-12">
 			<%@include file="header.jsp"%>
 			<div class="row">
 				<div class="modal fade" id="opencloseModal" tabindex="-1" role="dialog" aria-labelledby="opencloseModalLabel">
@@ -93,10 +93,10 @@
 						</div>
 					</div>
 				</div>			
-				<div class="col-xs-2">
+				<div class="hidden-xs col-sm-4 col-md-2">
 				<%@include file="sidebar.jsp" %>
 				</div>
-				<div class="col-xs-10">
+				<div class="col-xs-12 col-sm-8 col-md-10">
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Meeting You</a> <span class="divider"></span>
@@ -208,13 +208,14 @@
 							</div>
 							-->
 						</div>
-						<table class="table table-responsive table-hover table-striped">
+						<div class="table-responsive">
+						<table class="table table-hover table-striped">
 							<thead>
 								<tr>
 									<th>姓名</th>
 									<th>账号名</th>
-									<th>联系电话</th>
-									<th>电子邮件</th>
+									<th class="hidden-xs">联系电话</th>
+									<th class="hidden-xs">电子邮件</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -223,8 +224,8 @@
 								<tr>
 									<td>${item.name}</td>
 									<td>${item.username}</td>
-									<td>${item.phone}</td>
-									<td>${item.email}</td>
+									<td class="hidden-xs">${item.phone}</td>
+									<td class="hidden-xs">${item.email}</td>
 									<c:if test="${item.verified eq 2 }">
 										<td><button type="button" id="btnDoActionIt" class="btn btn-success" data-toggle="modal" data-target="#opencloseModal" data-uid="${item.uid}" data-act="enable">启用账号</button>
 										</td>
@@ -237,6 +238,7 @@
 							</c:forEach>
 							</tbody>
 						</table>
+						</div>
 						<div class="text-center">
 							<ul class="pagination pagination-centered">
 								<li>
@@ -264,7 +266,7 @@
 								<%
 									}else{
 								%>
-								<li>
+								<li class="hidden-xs">
 									<a href="SearchUsersServlet?name=${param.name}&username=${param.username}&verified=${param.verified}&pageNum=<%=i %>"><%=i %></a>
 								</li>
 								<%		
