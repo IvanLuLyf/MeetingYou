@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import meetingmanager.dao.*;
 import meetingmanager.service.*;
+import meetingmanager.util.PasswordEncoder;
 import meetingmanager.vo.*;
 
 /**
@@ -52,7 +53,11 @@ public class RegisterServlet extends HttpServlet {
 		int deptid = Integer.parseInt(request.getParameter("deptid"));
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
-
+		
+		if(password!=null){
+			password = PasswordEncoder.Encode(password);
+		}
+		
 		User user = new User(name, username, password, deptid, email,
 				phone, 0, 2);
 		UserService service = new UserService();

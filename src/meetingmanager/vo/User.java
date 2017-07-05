@@ -11,7 +11,8 @@ public class User {
 	private int departmentid;// ²¿ÃÅ
 	private int verified; // ÉóºË×´Ì¬
 	private int roleid; // ½ÇÉ«
-
+	private String token;
+	
 	public User() {
 		this.uid = 0;
 		this.username = "";
@@ -22,6 +23,7 @@ public class User {
 		this.departmentid = 0;
 		this.verified = 0;
 		this.roleid = 1;
+		token = "";
 	}
 
 	public User(String name, String username, String password,
@@ -36,6 +38,7 @@ public class User {
 		this.phone = phone;
 		this.verified = verified;
 		this.roleid = roleid;
+		token = "";
 	}
 
 	public static void main(String[] args) {
@@ -132,5 +135,13 @@ public class User {
 
 	public void setRole(int roleid) {
 		this.roleid = roleid;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

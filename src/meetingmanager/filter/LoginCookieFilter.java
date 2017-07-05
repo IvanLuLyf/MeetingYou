@@ -46,18 +46,17 @@ public class LoginCookieFilter implements Filter {
 				if (cookie.getName().equals("username")) {
 					username = cookie.getValue();
 				}
-
 				if (cookie.getName().equals("password")) {
 					password = cookie.getValue();
 				}
 			}
 		}
 		System.out.println(this.getClass().getName() + ":RUN");
-		if (username == null || password == null) {
+		if (username == null || username.equals("") || password == null || password.equals("")) {
 			chain.doFilter(request, response);
 		} else {
 			System.out.println(this.getClass().getName() + ":user=" + username );
-			httpServletRequest.getRequestDispatcher("LoginServlet?username=" + username + "&password=" + password).forward(request, response);
+			httpServletRequest.getRequestDispatcher("LoginServlet?username=" + username + "&token=" + password).forward(request, response);
 		}
 	}
 

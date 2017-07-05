@@ -113,7 +113,7 @@
 				class="form-control" placeholder="姓名" required>	
 			
 			<label for="phone" class="sr-only">联系电话</label>
-			<input type="text" id="phone" name="phone" maxlength="20" value="${param.phone}"
+			<input type="number" id="phone" name="phone" maxlength="20" value="${param.phone}"
 				class="form-control" placeholder="联系电话" required>	
 			
 			<label for="email" class="sr-only">电子邮件</label>

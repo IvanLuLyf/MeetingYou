@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import meetingmanager.service.UserService;
+import meetingmanager.util.PasswordEncoder;
 import meetingmanager.vo.User;
 
 /**
@@ -44,20 +45,22 @@ public class LoginServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String token = request.getParameter("token");
+		
 		String timelength = request.getParameter("timelength");
-
+		
+		if(password!=null){
+			password = PasswordEncoder.Encode(password);
+		}else{
+			password = token;
+		}
+		
+		System.out.println("user:" + username);
+		System.out.println("pass:" + password);
+		
 		int days = 0;
 		if (timelength != null) {
 			days = Integer.parseInt(timelength);
-		}
-
-		if (days != 0) {
-			Cookie usernamecookie = new Cookie("username", username);
-			Cookie passwordcookie = new Cookie("password", password);
-			usernamecookie.setMaxAge(days * 24 * 3600);
-			passwordcookie.setMaxAge(days * 24 * 3600);
-			response.addCookie(usernamecookie);
-			response.addCookie(passwordcookie);
 		}
 
 		UserService service = new UserService();
@@ -68,6 +71,15 @@ public class LoginServlet extends HttpServlet {
 
 			User user = service.getLoginedUser();
 
+			if (days != 0) {
+				Cookie usernamecookie = new Cookie("username", username);
+				Cookie passwordcookie = new Cookie("password", password);
+				usernamecookie.setMaxAge(days * 24 * 3600);
+				passwordcookie.setMaxAge(days * 24 * 3600);
+				response.addCookie(usernamecookie);
+				response.addCookie(passwordcookie);
+			}
+			
 			session.setAttribute("uid", user.getUid());
 			session.setAttribute("username", user.getUsername());
 			session.setAttribute("roleid", user.getRoleId());
