@@ -14,13 +14,13 @@
 <body>
     <div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<%@include file="header.jsp"%>
 			<div class="row">
-				<div class="hidden-xs col-sm-4 col-md-2">
+				<div class="hidden-xs col-sm-4 col-md-2  col-lg-2">
 				<%@include file="sidebar.jsp" %>
 				</div>
-				<div class="col-xs-12 col-sm-8 col-md-10">
+				<div class="col-xs-12 col-sm-8 col-md-10  col-lg-10">
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">Meeting You</a> <span class="divider"></span>
